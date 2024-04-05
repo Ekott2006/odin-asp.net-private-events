@@ -25,7 +25,8 @@ public class ScheduledEventRepo(DataContext context)
             Title = request.Title,
             OrganizerId = request.OrganizerId,
             Location = request.Location,
-            Description = request.Description
+            Description = request.Description,
+            DateTime = request.DateTime
         });
         await context.SaveChangesAsync();
     }
