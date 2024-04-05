@@ -1,0 +1,35 @@
+@page
+@using WebApp.Model
+@model IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>All Events</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+
+<div class="row gap-1 d-flex justify-content-center">
+    @foreach (ScheduledEvent scheduledEvent in Model.GetScheduledEvents)
+    {
+        <div class="card gap-3" style="width: 17rem">
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title">@scheduledEvent.Title</h5>
+                <p class="card-text">
+                    <em class="font-weight-bold"> Location: </em> @scheduledEvent.Location
+                </p>
+                <p class="card-text">
+                    <em class="font-weight-bold"> Date: </em> @scheduledEvent.DateTime
+                </p>
+                <form method="post" class="h6 mb-0 mt-auto text-black">
+                    <input asp-for="@Model.EventId" class="form-control" value="@scheduledEvent.Id" hidden="hidden"/>
+                    <input type="submit" value="Accept Invitation" class="btn btn-primary"/>
+                </form>
+            </div>
+        </div>
+    }
+</div>

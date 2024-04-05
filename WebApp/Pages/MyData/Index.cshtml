@@ -1,0 +1,93 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using WebApp.Helper
+@using WebApp.Model
+@model IndexModel
+@{
+    ViewData["Title"] = "My Data";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+<h1> My Personal Data </h1>
+
+<h3>All Events Hosted</h3>
+<p>
+    <a asp-page="@(RouteName.ScheduledEvents)/Create">Create New</a>
+</p>
+@if (Model.GetUser.OrganizedEvents.Count == 0)
+{
+    <h5> No Event Invitation Accepted</h5>
+}
+else
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.GetUser.OrganizedEvents.ToList()[0].Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GetUser.OrganizedEvents.ToList()[0].Location)
+            </th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (ScheduledEvent scheduledEvent in Model.GetUser.OrganizedEvents)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => scheduledEvent.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => scheduledEvent.Location)
+                </td>
+                <td>
+                    <a asp-page="@(RouteName.ScheduledEvents)/Details" asp-route-id="@scheduledEvent.Id">Details</a> |
+                    <a asp-page="@(RouteName.ScheduledEvents)/Delete" asp-route-id="@scheduledEvent.Id">Delete</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+<h3>All Invitation Accepted </h3>
+@if (Model.GetUser.AttendingEvents.Count == 0)
+{
+    <h5> No Event Invitation Accepted</h5>
+}
+else
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.GetUser.AttendingEvents.ToList()[0].ScheduledEvent.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => Model.GetUser.AttendingEvents.ToList()[0].ScheduledEvent.Location)
+            </th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (EventAttendee attendee in Model.GetUser.AttendingEvents)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => attendee.ScheduledEvent.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => attendee.ScheduledEvent.Location)
+                </td>
+                <td>
+                    <form method="post" class="h6 mb-0 mt-auto text-black">
+                        <input asp-for="EventAttendeesId" class="form-control" value="@attendee.Id" hidden="hidden"/>
+                        <input type="submit" value="Delete" class="btn btn-primary"/>
+                    </form>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
